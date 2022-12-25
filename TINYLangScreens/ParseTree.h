@@ -7,7 +7,9 @@
 #ifndef PARSER_PARSETREE_H
 #define PARSER_PARSETREE_H
 
-
+#include <iostream>
+#include <queue>
+#include <stack>
 #include <vector>
 #include <string>
 #include <set>
@@ -15,8 +17,12 @@
 class ParseTree {
 private:
     int curPos;
+    int line;
+    int i;
     std::vector<std::string> tokensList;
+    std::vector<int> tokensPerLine;
     std::vector<std::string> codeList;
+    std::vector<std::string> errors;
     std::set<std::string> symbols;
     std::string curToken;
     std::string peekToken;
@@ -32,11 +38,14 @@ private:
     Node* rootNode;
     std::vector<Node*> createdNodes;
 public:
-    ParseTree(std::vector<std::string> tokens, std::vector<std::string> code) {
+    ParseTree(std::vector<std::string> tokens, std::vector<std::string> code, std::vector<int> tokensPerLine) {
         rootNode = new Node((std::string)"PROGRAM");
         this->tokensList = tokens;
         this->codeList = code;
+        this->tokensPerLine = tokensPerLine;
         curPos = 0;
+        line = 0;
+        i = 0;
         nextToken();
     }
     ParseTree(ParseTree& orgTree) {
@@ -45,12 +54,22 @@ public:
         this->codeList = orgTree.codeList;
         this->tokensList = orgTree.tokensList;
     }
+    ParseTree() {
+        rootNode = new Node("PROGRAM");
+        curPos = 0;
+        line = 0;
+        i = 0;
+        nextToken();
+    }
     ~ParseTree();
+    std::vector<std::string> getErrors();
+    void setAttributes(std::vector<std::string> tokenList,
+        std::vector<std::string> codeList, std::vector<int> tokensPerLine);
     void nextToken();
     bool checkToken(std::string kind);
-    void match(std::string kind);
+    bool match(std::string kind);
     bool isComparisonOperator();
-    void abort(std::string msg);
+    void errorDetection(std::string msg);
     void program();
     void statement(Node* parent, std::stack<Node*> s);
     void comparison(Node* parent);

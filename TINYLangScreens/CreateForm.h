@@ -111,7 +111,6 @@ namespace TINYLangScreens {
 			// textBox1
 			// 
 			this->textBox1->BackColor = System::Drawing::Color::Gainsboro;
-			this->textBox1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->textBox1->Location = System::Drawing::Point(26, 179);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(182, 20);
@@ -166,29 +165,22 @@ namespace TINYLangScreens {
 		}
 #pragma endregion
 	private: System::Void CreateBtn_Click(System::Object^ sender, System::EventArgs^ e) {
+		
+		
+
 		this->Hide();
 		TextForm^ Obj = gcnew TextForm(this);
 		Obj->ShowDialog();
 		
+		
 	}
-private: System::Void BackBtn_Click(System::Object^ sender, System::EventArgs^ e) {
-	this->Hide();
-	Obj->Show();
-}
-private: System::Void SearchBtn_Click(System::Object^ sender, System::EventArgs^ e) {
-	
-
-	Stream^ myStream;
-	OpenFileDialog^ openFileDialog = gcnew OpenFileDialog();
-
-	if (openFileDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
-		if ( (myStream == openFileDialog->OpenFile()) != NULL) {
-			String^ strFileName = openFileDialog->InitialDirectory + openFileDialog->FileName;
-			MessageBox::Show(strFileName);
-			myStream->Close();
-		}
+	private: System::Void BackBtn_Click(System::Object^ sender, System::EventArgs^ e) {
+		
+		
+		this->Hide();
+		Obj->Show();
 	}
 
-}
+
 };
 }

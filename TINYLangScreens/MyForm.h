@@ -1,4 +1,8 @@
 #pragma once
+//#include "TextForm.h"
+#include "Global.h"
+#include <string>
+#include <iostream>
 
 namespace TINYLangScreens {
 
@@ -22,6 +26,11 @@ namespace TINYLangScreens {
 			//TODO: Add the constructor code here
 			//
 		}
+	private: System::Windows::Forms::Label^ label1;
+	public:
+
+		String^ errors = gcnew String(errorString.data());
+		String^ errorcnt = errorCounter.ToString();
 
 	protected:
 		/// <summary>
@@ -54,6 +63,7 @@ namespace TINYLangScreens {
 		{
 			this->ErrorLabel = (gcnew System::Windows::Forms::Label());
 			this->ErrorBox = (gcnew System::Windows::Forms::TextBox());
+			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// ErrorLabel
@@ -79,6 +89,21 @@ namespace TINYLangScreens {
 			this->ErrorBox->Name = L"ErrorBox";
 			this->ErrorBox->Size = System::Drawing::Size(430, 256);
 			this->ErrorBox->TabIndex = 2;
+			this->ErrorBox->Text = errors;
+			this->ErrorBox->TextChanged += gcnew System::EventHandler(this, &MyForm::ErrorBox_TextChanged);
+			// 
+			// label1
+			// 
+			this->label1->BackColor = System::Drawing::Color::Transparent;
+			this->label1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Javanese Text", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label1->ForeColor = System::Drawing::Color::FloralWhite;
+			this->label1->Location = System::Drawing::Point(172, 18);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(44, 33);
+			this->label1->TabIndex = 3;
+			this->label1->Text = errorcnt;
 			// 
 			// MyForm
 			// 
@@ -86,6 +111,7 @@ namespace TINYLangScreens {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->ClientSize = System::Drawing::Size(454, 326);
+			this->Controls->Add(this->label1);
 			this->Controls->Add(this->ErrorBox);
 			this->Controls->Add(this->ErrorLabel);
 			this->Name = L"MyForm";
@@ -95,5 +121,13 @@ namespace TINYLangScreens {
 
 		}
 #pragma endregion
+	private: System::Void ErrorBox_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		
+		/*TextForm^ Obj = gcnew TextForm();
+
+		TextForm->richTextBox()*/
+
+		
+	}
 	};
 }

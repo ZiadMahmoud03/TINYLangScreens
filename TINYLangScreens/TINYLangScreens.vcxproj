@@ -132,6 +132,7 @@
     <ClInclude Include="CreateForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Global.h" />
     <ClInclude Include="ParseTree.h" />
     <ClInclude Include="Scanner.h" />
     <ClInclude Include="MyForm.h">
@@ -155,6 +156,7 @@
     <ClCompile Include="..\..\Data_Project\Scanner\Scanner.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="CreateForm.cpp" />
+    <ClCompile Include="Global.cpp" />
     <ClCompile Include="MyForm.cpp" />
     <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="NoErrorForm.cpp" />

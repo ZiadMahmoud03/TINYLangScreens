@@ -6,12 +6,17 @@
 #include <fstream>
 #include "Scanner.h"
 #include <vector>
+#include "ParseTree.h"
+#include "Global.h"
 
 #include <string>
-
 #include <msclr\marshal_cppstd.h>
 
+
+
 namespace TINYLangScreens {
+
+
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -43,6 +48,7 @@ namespace TINYLangScreens {
 			//
 		}
 
+
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -54,13 +60,14 @@ namespace TINYLangScreens {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::TextBox^ textBox1;
+
 	private: System::Windows::Forms::Button^ CheckErrorBtn;
 	protected:
 
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Button^ GoBackBtn;
 	private: System::Windows::Forms::Button^ SaveBtn;
+	private: System::Windows::Forms::RichTextBox^ richTextBox1;
 
 
 
@@ -77,26 +84,12 @@ namespace TINYLangScreens {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->CheckErrorBtn = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->GoBackBtn = (gcnew System::Windows::Forms::Button());
 			this->SaveBtn = (gcnew System::Windows::Forms::Button());
+			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
 			this->SuspendLayout();
-			// 
-			// textBox1
-			// 
-			this->textBox1->BackColor = System::Drawing::Color::WhiteSmoke;
-			this->textBox1->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->textBox1->Font = (gcnew System::Drawing::Font(L"Calibri", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->textBox1->ForeColor = System::Drawing::Color::Black;
-			this->textBox1->Location = System::Drawing::Point(12, 45);
-			this->textBox1->Multiline = true;
-			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(458, 343);
-			this->textBox1->TabIndex = 0;
-			this->textBox1->TextChanged += gcnew System::EventHandler(this, &TextForm::textBox1_TextChanged);
 			// 
 			// CheckErrorBtn
 			// 
@@ -155,21 +148,30 @@ namespace TINYLangScreens {
 			this->SaveBtn->Text = L"Save";
 			this->SaveBtn->UseVisualStyleBackColor = false;
 			// 
+			// richTextBox1
+			// 
+			this->richTextBox1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->richTextBox1->Location = System::Drawing::Point(18, 62);
+			this->richTextBox1->Name = L"richTextBox1";
+			this->richTextBox1->Size = System::Drawing::Size(452, 309);
+			this->richTextBox1->TabIndex = 5;
+			this->richTextBox1->Text = L"";
+			// 
 			// TextForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->ClientSize = System::Drawing::Size(485, 426);
+			this->Controls->Add(this->richTextBox1);
 			this->Controls->Add(this->SaveBtn);
 			this->Controls->Add(this->GoBackBtn);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->CheckErrorBtn);
-			this->Controls->Add(this->textBox1);
 			this->Name = L"TextForm";
 			this->Text = L"\"Project Name\"";
 			this->ResumeLayout(false);
-			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -177,15 +179,35 @@ namespace TINYLangScreens {
 	}
 	private: System::Void CheckErrorBtn_Click(System::Object^ sender, System::EventArgs^ e) {
 		
+		String^ txt = richTextBox1->Text;
 
-		
-		
-		
-		MyForm^ Object = gcnew MyForm();
-		Object->ShowDialog();
+		msclr::interop::marshal_context context;
+		std::string standardString = context.marshal_as<std::string>(txt);
 
-		NoErrorForm^ Object2 = gcnew NoErrorForm();
-		Object2->ShowDialog();
+		Scanner scn(standardString);
+		scn.scan();
+
+		ParseTree prsTr(scn.getTokenList(), scn.getCodeList(), scn.getTokensPerLine());
+		prsTr.program();
+		std::vector<std::string> errs = prsTr.getErrors();
+
+		errorCounter = errs.size();
+
+		errorString = "";
+
+		for (std::string error : errs) {
+			errorString += error + "\r\n";
+			
+		}
+		
+		if(errs.size() == 0) {
+			NoErrorForm^ Object2 = gcnew NoErrorForm();
+			Object2->ShowDialog();
+		}
+		else {
+			MyForm^ Object = gcnew MyForm();
+			Object->ShowDialog();
+		}
 
 	}
 	private: System::Void GoBackBtn_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -193,32 +215,91 @@ namespace TINYLangScreens {
 		Obj->Show();
 	}
 	
-	private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	//private: System::Void richTextBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	//	 
+	//	String^ txt = richTextBox1->Text;
 
-		String^ text = textBox1->Text;
+	//	msclr::interop::marshal_context context;
+	//	std::string standardString = context.marshal_as<std::string>(txt);
 
-		msclr::interop::marshal_context context;
-		std::string standardString = context.marshal_as<std::string>(text);
+	//	
+
+	//	/*textBox1->ForeColor = System::Drawing::Color::Red;*/
+
+	//	   /*Scanner scn(standardString);
+	//	   scn.scan();
+
+	//	   textBox1->GetLineFromCharIndex();
+
+	//	   std::ofstream myfile("example.txt");
+	//	   if (myfile.is_open())
+	//	   {
+	//		   std::vector<std::string> vec;
+	//		   vec = scn.getTokenList();
+	//		   for(std::string text: vec)
+	//		   myfile << text;
+
+	//		   myfile.close();
+	//	   }
+	//	   else std::cout << "Unable to open file";*/
+
+
+
+	//	//for (int i = 0; i < 20; i++) {
+	//	//	int startIndex = i;
+	//	//	richTextBox1->Select(startIndex, 20);
+
+	//	//	//Set the selected text fore and background color
+	//	//	richTextBox1->SelectionColor = System::Drawing::Color::White;
+	//	//	richTextBox1->SelectionBackColor = System::Drawing::Color::Blue;
+	//	//}
+
+
+	//	/*String^ text = "For";
+
+	//	if (richTextBox1->Find(text)) {
+	//		richTextBox1->SelectionColor = Color::Red;
+	//	}*/
+
+
+	//	/*array<String^>^ lines = richTextBox1->Lines;
+	//	int count = lines->Length;
+
+	//	for (int idx = 0; idx < count; ++idx)
+	//	{
+	//		if (idx == 0) {
+	//			richTextBox1->ForeColor = System::Drawing::Color::IndianRed;
+	//		}
+	//		else if (idx == 1) {
+	//			richTextBox1->ForeColor = System::Drawing::Color::Blue;
+	//		}
+	//		else if (idx >= 2) {
+	//			richTextBox1->ForeColor = System::Drawing::Color::Green;
+	//		}
+	//	}*/
+
+	//	Handle
 
 
 
 
-		Scanner scn(standardString);
-		scn.scan();
+	//	/*#include <fstream>
+	//	#include <string>
+	//	#include <msclr\marshal_cppstd.h>
 
-		std::ofstream myfile("example.txt");
-		if (myfile.is_open())
-		{
-			std::vector<std::string> vec;
-			vec = scn.getTokenList();
-			for(std::string text: vec)
-			myfile << text;
+	//	System::String^ managedString;
 
-			myfile.close();
-		}
-		else std::cout << "Unable to open file";
+	//	msclr::interop::marshal_context context;
+	//	std::string standardString = context.marshal_as<std::string>(managedString);
 
 
-	}
+	//	ofstream myfile("example.txt");
+	//	if (myfile.is_open())
+	//	{
+	//		myfile << standardString;
+	//		myfile.close();
+	//	}*/
+
+	//
 };
 }
