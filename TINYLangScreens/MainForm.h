@@ -47,7 +47,7 @@ namespace TINYLangScreens {
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Button^ NewFileBtn;
-	private: System::Windows::Forms::Button^ OpenFileBtn;
+
 
 
 
@@ -67,11 +67,9 @@ namespace TINYLangScreens {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MainForm::typeid));
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->NewFileBtn = (gcnew System::Windows::Forms::Button());
-			this->OpenFileBtn = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// label1
@@ -109,7 +107,7 @@ namespace TINYLangScreens {
 			this->NewFileBtn->Font = (gcnew System::Drawing::Font(L"Calibri", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->NewFileBtn->ForeColor = System::Drawing::Color::FloralWhite;
-			this->NewFileBtn->Location = System::Drawing::Point(184, 148);
+			this->NewFileBtn->Location = System::Drawing::Point(183, 183);
 			this->NewFileBtn->Name = L"NewFileBtn";
 			this->NewFileBtn->Size = System::Drawing::Size(178, 28);
 			this->NewFileBtn->TabIndex = 4;
@@ -117,29 +115,12 @@ namespace TINYLangScreens {
 			this->NewFileBtn->UseVisualStyleBackColor = false;
 			this->NewFileBtn->Click += gcnew System::EventHandler(this, &MainForm::NewFileBtn_Click);
 			// 
-			// OpenFileBtn
-			// 
-			this->OpenFileBtn->BackColor = System::Drawing::Color::Transparent;
-			this->OpenFileBtn->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			this->OpenFileBtn->Font = (gcnew System::Drawing::Font(L"Calibri", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->OpenFileBtn->ForeColor = System::Drawing::Color::FloralWhite;
-			this->OpenFileBtn->Location = System::Drawing::Point(184, 198);
-			this->OpenFileBtn->Name = L"OpenFileBtn";
-			this->OpenFileBtn->Size = System::Drawing::Size(178, 28);
-			this->OpenFileBtn->TabIndex = 5;
-			this->OpenFileBtn->Text = L"Open Existing File";
-			this->OpenFileBtn->UseVisualStyleBackColor = false;
-			this->OpenFileBtn->Click += gcnew System::EventHandler(this, &MainForm::OpenFileBtn_Click);
-			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
-			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->ClientSize = System::Drawing::Size(577, 385);
-			this->Controls->Add(this->OpenFileBtn);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->NewFileBtn);

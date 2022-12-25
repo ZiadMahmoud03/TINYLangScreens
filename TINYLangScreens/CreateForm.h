@@ -1,5 +1,8 @@
 #pragma once
+#include <iostream>
+#include <fstream>
 #include "TextForm.h"
+
 
 namespace TINYLangScreens {
 
@@ -9,6 +12,7 @@ namespace TINYLangScreens {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::IO;
 
 	/// <summary>
 	/// Summary for CreateForm
@@ -47,13 +51,14 @@ namespace TINYLangScreens {
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::TextBox^ textBox1;
-	private: System::Windows::Forms::Label^ label3;
 
-	private: System::Windows::Forms::TextBox^ textBox2;
+
+
 	private: System::Windows::Forms::Button^ CreateBtn;
 
-	private: System::Windows::Forms::Button^ SearchBtn;
+
 	private: System::Windows::Forms::Button^ BackBtn;
+
 
 
 	protected:
@@ -71,14 +76,10 @@ namespace TINYLangScreens {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(CreateForm::typeid));
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
-			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->CreateBtn = (gcnew System::Windows::Forms::Button());
-			this->SearchBtn = (gcnew System::Windows::Forms::Button());
 			this->BackBtn = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
@@ -101,7 +102,7 @@ namespace TINYLangScreens {
 			this->label2->Font = (gcnew System::Drawing::Font(L"Javanese Text", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label2->ForeColor = System::Drawing::Color::FloralWhite;
-			this->label2->Location = System::Drawing::Point(23, 107);
+			this->label2->Location = System::Drawing::Point(18, 126);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(148, 34);
 			this->label2->TabIndex = 1;
@@ -111,31 +112,10 @@ namespace TINYLangScreens {
 			// 
 			this->textBox1->BackColor = System::Drawing::Color::Gainsboro;
 			this->textBox1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->textBox1->Location = System::Drawing::Point(26, 144);
+			this->textBox1->Location = System::Drawing::Point(26, 179);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(182, 20);
 			this->textBox1->TabIndex = 2;
-			// 
-			// label3
-			// 
-			this->label3->BackColor = System::Drawing::Color::Transparent;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Javanese Text", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label3->ForeColor = System::Drawing::Color::FloralWhite;
-			this->label3->Location = System::Drawing::Point(23, 202);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(148, 34);
-			this->label3->TabIndex = 3;
-			this->label3->Text = L"Location";
-			// 
-			// textBox2
-			// 
-			this->textBox2->BackColor = System::Drawing::Color::Gainsboro;
-			this->textBox2->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->textBox2->Location = System::Drawing::Point(26, 252);
-			this->textBox2->Name = L"textBox2";
-			this->textBox2->Size = System::Drawing::Size(182, 20);
-			this->textBox2->TabIndex = 4;
 			// 
 			// CreateBtn
 			// 
@@ -151,20 +131,6 @@ namespace TINYLangScreens {
 			this->CreateBtn->Text = L"Create";
 			this->CreateBtn->UseVisualStyleBackColor = false;
 			this->CreateBtn->Click += gcnew System::EventHandler(this, &CreateForm::CreateBtn_Click);
-			// 
-			// SearchBtn
-			// 
-			this->SearchBtn->BackColor = System::Drawing::Color::Transparent;
-			this->SearchBtn->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			this->SearchBtn->Font = (gcnew System::Drawing::Font(L"Javanese Text", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->SearchBtn->ForeColor = System::Drawing::Color::FloralWhite;
-			this->SearchBtn->Location = System::Drawing::Point(225, 252);
-			this->SearchBtn->Name = L"SearchBtn";
-			this->SearchBtn->Size = System::Drawing::Size(87, 27);
-			this->SearchBtn->TabIndex = 6;
-			this->SearchBtn->Text = L"Search";
-			this->SearchBtn->UseVisualStyleBackColor = false;
 			// 
 			// BackBtn
 			// 
@@ -185,14 +151,10 @@ namespace TINYLangScreens {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
-			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->ClientSize = System::Drawing::Size(577, 385);
 			this->Controls->Add(this->BackBtn);
-			this->Controls->Add(this->SearchBtn);
 			this->Controls->Add(this->CreateBtn);
-			this->Controls->Add(this->textBox2);
-			this->Controls->Add(this->label3);
 			this->Controls->Add(this->textBox1);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
@@ -212,6 +174,21 @@ namespace TINYLangScreens {
 private: System::Void BackBtn_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->Hide();
 	Obj->Show();
+}
+private: System::Void SearchBtn_Click(System::Object^ sender, System::EventArgs^ e) {
+	
+
+	Stream^ myStream;
+	OpenFileDialog^ openFileDialog = gcnew OpenFileDialog();
+
+	if (openFileDialog->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+		if ( (myStream == openFileDialog->OpenFile()) != NULL) {
+			String^ strFileName = openFileDialog->InitialDirectory + openFileDialog->FileName;
+			MessageBox::Show(strFileName);
+			myStream->Close();
+		}
+	}
+
 }
 };
 }

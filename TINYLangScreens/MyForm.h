@@ -36,7 +36,7 @@ namespace TINYLangScreens {
 		}
 	private: System::Windows::Forms::Label^ ErrorLabel;
 	protected:
-	private: System::Windows::Forms::Label^ label1;
+
 	private: System::Windows::Forms::TextBox^ ErrorBox;
 
 	private:
@@ -52,9 +52,7 @@ namespace TINYLangScreens {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->ErrorLabel = (gcnew System::Windows::Forms::Label());
-			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->ErrorBox = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
 			// 
@@ -69,19 +67,6 @@ namespace TINYLangScreens {
 			this->ErrorLabel->Size = System::Drawing::Size(171, 36);
 			this->ErrorLabel->TabIndex = 0;
 			this->ErrorLabel->Text = L"Errors Detected:";
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->BackColor = System::Drawing::Color::Transparent;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Javanese Text", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label1->ForeColor = System::Drawing::Color::FloralWhite;
-			this->label1->Location = System::Drawing::Point(176, 22);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(26, 36);
-			this->label1->TabIndex = 1;
-			this->label1->Text = L"X";
 			// 
 			// ErrorBox
 			// 
@@ -99,11 +84,9 @@ namespace TINYLangScreens {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
-			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->ClientSize = System::Drawing::Size(454, 326);
 			this->Controls->Add(this->ErrorBox);
-			this->Controls->Add(this->label1);
 			this->Controls->Add(this->ErrorLabel);
 			this->Name = L"MyForm";
 			this->Text = L"Errors";

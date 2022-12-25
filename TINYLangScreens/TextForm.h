@@ -1,7 +1,15 @@
 #pragma once
 #include "NoErrorForm.h"
 #include "MyForm.h"
+#include <iostream>
+#include <stdlib.h>
+#include <fstream>
+#include "Scanner.h"
+#include <vector>
 
+#include <string>
+
+#include <msclr\marshal_cppstd.h>
 
 namespace TINYLangScreens {
 
@@ -47,8 +55,9 @@ namespace TINYLangScreens {
 			}
 		}
 	private: System::Windows::Forms::TextBox^ textBox1;
+	private: System::Windows::Forms::Button^ CheckErrorBtn;
 	protected:
-	private: System::Windows::Forms::Button^ button1;
+
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Button^ GoBackBtn;
 	private: System::Windows::Forms::Button^ SaveBtn;
@@ -68,9 +77,8 @@ namespace TINYLangScreens {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(TextForm::typeid));
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
-			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->CheckErrorBtn = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->GoBackBtn = (gcnew System::Windows::Forms::Button());
 			this->SaveBtn = (gcnew System::Windows::Forms::Button());
@@ -88,21 +96,22 @@ namespace TINYLangScreens {
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(458, 343);
 			this->textBox1->TabIndex = 0;
+			this->textBox1->TextChanged += gcnew System::EventHandler(this, &TextForm::textBox1_TextChanged);
 			// 
-			// button1
+			// CheckErrorBtn
 			// 
-			this->button1->BackColor = System::Drawing::Color::Transparent;
-			this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			this->button1->Font = (gcnew System::Drawing::Font(L"Calibri", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->CheckErrorBtn->BackColor = System::Drawing::Color::Transparent;
+			this->CheckErrorBtn->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->CheckErrorBtn->Font = (gcnew System::Drawing::Font(L"Calibri", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->button1->ForeColor = System::Drawing::Color::White;
-			this->button1->Location = System::Drawing::Point(373, 12);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(97, 23);
-			this->button1->TabIndex = 1;
-			this->button1->Text = L"Check Errors";
-			this->button1->UseVisualStyleBackColor = false;
-			this->button1->Click += gcnew System::EventHandler(this, &TextForm::button1_Click);
+			this->CheckErrorBtn->ForeColor = System::Drawing::Color::White;
+			this->CheckErrorBtn->Location = System::Drawing::Point(373, 12);
+			this->CheckErrorBtn->Name = L"CheckErrorBtn";
+			this->CheckErrorBtn->Size = System::Drawing::Size(97, 23);
+			this->CheckErrorBtn->TabIndex = 1;
+			this->CheckErrorBtn->Text = L"Check Errors";
+			this->CheckErrorBtn->UseVisualStyleBackColor = false;
+			this->CheckErrorBtn->Click += gcnew System::EventHandler(this, &TextForm::CheckErrorBtn_Click);
 			// 
 			// label1
 			// 
@@ -150,13 +159,12 @@ namespace TINYLangScreens {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
-			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->ClientSize = System::Drawing::Size(485, 426);
 			this->Controls->Add(this->SaveBtn);
 			this->Controls->Add(this->GoBackBtn);
 			this->Controls->Add(this->label1);
-			this->Controls->Add(this->button1);
+			this->Controls->Add(this->CheckErrorBtn);
 			this->Controls->Add(this->textBox1);
 			this->Name = L"TextForm";
 			this->Text = L"\"Project Name\"";
@@ -167,15 +175,49 @@ namespace TINYLangScreens {
 #pragma endregion
 	private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
-	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void CheckErrorBtn_Click(System::Object^ sender, System::EventArgs^ e) {
+		
+		
+		
+		
 		MyForm^ Object = gcnew MyForm();
-		NoErrorForm^ Object2 = gcnew NoErrorForm();
 		Object->ShowDialog();
+
+		NoErrorForm^ Object2 = gcnew NoErrorForm();
 		Object2->ShowDialog();
+
 	}
 	private: System::Void GoBackBtn_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Hide();
 		Obj->Show();
+	}
+	
+	private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+
+		String^ text = textBox1->Text;
+
+		msclr::interop::marshal_context context;
+		std::string standardString = context.marshal_as<std::string>(text);
+
+
+
+
+		Scanner scn(standardString);
+		scn.scan();
+
+		std::ofstream myfile("example.txt");
+		if (myfile.is_open())
+		{
+			std::vector<std::string> vec;
+			vec = scn.getTokenList();
+			for(std::string text: vec)
+			myfile << text;
+
+			myfile.close();
+		}
+		else std::cout << "Unable to open file";
+
+
 	}
 };
 }
